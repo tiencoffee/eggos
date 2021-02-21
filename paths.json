@@ -1,0 +1,11 @@
+{
+	"comps": [
+		"comps/Button.ls",
+		"comps/Checkbox.ls",
+		"comps/Icon.ls",
+		"comps/PasswordInput.ls",
+		"comps/Radio.ls",
+		"comps/Select.ls",
+		"comps/TextInput.ls"
+	]
+}
