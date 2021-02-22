@@ -3,8 +3,8 @@ const
 	url = require('url')
 
 module.exports = function(req, res, next) {
-	if (req.url.startsWith('/api/middleware.js/')) {
-		var fileUrl = req.url.replace('/api/middleware.js/', '')
+	if (req.url.startsWith('/api/')) {
+		var fileUrl = url.parse(req.url, true).query.url
 		https.get(fileUrl).on('response', response => {
 			var body = []
 			response.on('data', chunk => {
