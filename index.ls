@@ -126,5 +126,4 @@ m <<<
 ((code))
 
 if os.App
-	m.bind os.App
 	m.mount appEl, os.App

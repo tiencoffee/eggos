@@ -7,5 +7,8 @@
 		"comps/Radio.ls",
 		"comps/Select.ls",
 		"comps/TextInput.ls"
+	],
+	"filesApps": [
+		"files/C/apps/FileManager"
 	]
 }

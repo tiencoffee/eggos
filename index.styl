@@ -1,3 +1,8 @@
+for i in range(1, 10)
+	define('gray' + i, lighten(#5c7080, (7 - i) / 7 * 120% - 10%))
+	define('blue' + i, lighten(#137cbd, (7 - i) / 7 * 100%))
+	define('red' + i, lighten(#db3737, (7 - i) / 7 * 100%))
+
 line-clamp()
 	-webkit-line-clamp arguments
 	line-clamp arguments
@@ -23,7 +28,7 @@ text-truncate(line)
 
 body
 	margin 0
-	font 10pt 'Verdana',sans-serif
+	font 10pt 'Ubuntu',sans-serif
 	word-break break-word
 	user-select none
 	cursor default
@@ -33,8 +38,8 @@ body
 :focus
 	outline 0
 ::selection
-	background #515b9e
-	color #d2d5ec
+	background blue7
+	color #fff
 
 .Icon-fa
 	display inline-flex
@@ -52,14 +57,13 @@ body
 	display inline-flex
 	justify-content center
 	align-items center
-	background #e0e2f8
+	background gray1
 	font inherit
 .Button-blue
-	background #515b9e
-	// background #216b98
+	background blue7
 	color #fff
 .Button-red
-	background #d34459
+	background red7
 	color #fff
 .Button_text
 	padding 0 4px
@@ -75,7 +79,7 @@ body
 	align-items center
 	background #fff
 	&:focus-within
-		outline solid 2px #515b9e
+		outline solid 2px blue7
 		outline-offset -1px
 		z-index 1
 .TextInput_leftIcon
@@ -106,12 +110,12 @@ body
 	height 18px
 	margin 0
 	border solid 1px #0006
-	background #e0e2f8
+	background gray1
 	appearance none
 .Radio_input
 	border-radius 50%
 	&:checked
-		background #515b9e
+		background blue7
 		&:after
 			position absolute
 			inset 4px
@@ -121,7 +125,7 @@ body
 .Checkbox_input
 	border-radius 0
 	&:checked
-		background #515b9e
+		background blue7
 		&:after
 			position absolute
 			inset 0
@@ -143,7 +147,7 @@ body
 	border solid 1px #0006
 	display inline-flex
 	align-items center
-	background #e0e2f8
+	background gray1
 .Select_text
 	margin-right 8px
 	flex-grow 1
@@ -161,7 +165,7 @@ body
 	display flex
 	align-items center
 .Select_item-hover
-	background #e0e2f8
+	background gray2
 .Select_divider
 	margin 4px 0
 	border-bottom solid 1px #0006
@@ -336,3 +340,10 @@ for i in 0..5
 	pointer-events none
 	> *
 		pointer-events auto
+for i in range(1, 10)
+	.Gray{i}
+		background lookup('gray' + i)
+	.Blue{i}
+		background lookup('blue' + i)
+	.Red{i}
+		background lookup('red' + i)
