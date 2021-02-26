@@ -7,8 +7,9 @@ require! {
 process.chdir __dirname
 
 paths =
-	comps: globConcat.sync \comps/*
-	filesApps: globConcat.sync \files/C/apps/*
+	compsBoth: globConcat.sync \comps/both/*
+	compsMain: globConcat.sync \comps/main/*
+	apps: globConcat.sync \C/apps/*
 
 text = JSON.stringify paths,, \\t
 fs.writeFileSync \paths.json text

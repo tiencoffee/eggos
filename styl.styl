@@ -22,14 +22,16 @@ text-truncate(line)
 		overflow hidden
 	else
 		display -webkit-box
-		line-clamp 3
+		line-clamp line
 		box-orient vertical
 		overflow hidden
 
+@import '//cdn.jsdelivr.net/gh/tiencoffee/fonts/Calibri/Calibri.css'
 body
 	margin 0
-	font 10pt 'Ubuntu',sans-serif
+	font 12pt 'Calibri',sans-serif
 	word-break break-word
+	overflow hidden
 	user-select none
 	cursor default
 *, *:before, *:after
@@ -40,10 +42,16 @@ body
 ::selection
 	background blue7
 	color #fff
+h1, h2, h3, h4, h5, h6, p
+	margin 8px 0
+img, a
+	user-drag none
 
+#appEl
+	position absolute
+	inset 0
 .Icon-fa
 	display inline-flex
-	font-size 120%
 .Icon-img
 	width 18px
 	height 18px
@@ -59,12 +67,39 @@ body
 	align-items center
 	background gray1
 	font inherit
+	&:hover
+		background gray2
+	&:active
+		background gray3
 .Button-blue
 	background blue7
 	color #fff
+	&:hover
+		background blue8
+	&:active
+		background blue9
+	&.Button-minimal
+		color blue8
+		&:hover
+			background blue2
+		&:active
+			background blue3
 .Button-red
 	background red7
 	color #fff
+	&:hover
+		background red8
+	&:active
+		background red9
+	&.Button-minimal
+		color red8
+		&:hover
+			background red2
+		&:active
+			background red3
+.Button-minimal
+	border 0
+	background #0000
 .Button_text
 	padding 0 4px
 .Button_icon
@@ -170,6 +205,50 @@ body
 	margin 4px 0
 	border-bottom solid 1px #0006
 
+.Dialog
+	position absolute
+	animation-duration .25s
+	animation-timing-function ease
+	animation-fill-mode forwards
+.Dialog-maximize
+	animation-name Dialog-maximize
+@keyframes Dialog-maximize
+	to
+		width 100%
+		height 100%
+		transform translate(0,0)
+.Dialog-unmaximize
+	animation-name Dialog-unmaximize
+@keyframes Dialog-unmaximize
+	from
+		width 100%
+		height 100%
+		transform translate(0,0)
+.Dialog_content
+	height 100%
+	border solid 1px #0006
+	display flex
+	flex-direction column
+	background gray1
+	box-shadow 0 2px 8px #0006
+.Dialog_header
+	height 32px
+	padding 0 4px
+	display flex
+	align-items center
+.Dialog_title
+	padding 0 8px
+	display flex
+	flex-grow 1
+	align-items center
+	justify-content center
+	overflow hidden
+.Dialog_body
+	margin 0 4px 4px
+	border 0
+	flex-grow 1
+	background #fff
+
 ((styl))
 
 .Row
@@ -193,6 +272,8 @@ for i in range(1, 12)
 		grid-template-columns repeat(i, 1fr)
 		> .Col{i}
 			grid-column span (i)
+	.Offset{i}
+		margin-right val
 .Full
 	position absolute
 	inset 0
@@ -200,16 +281,16 @@ for i in range(1, 12)
 	flex-wrap wrap
 .Nowrap
 	flex-wrap nowrap
-for dir in row column
+for dir in Row Column
 	.{dir}
-		prop = dir is row ? 'justify-content' : 'align-items'
+		prop = dir is Row ? 'justify-content' : 'align-items'
 		&.Start
 			{prop} flex-start
 		&.Center
 			{prop} center
 		&.End
 			{prop} flex-end
-		prop = dir is row ? 'align-items' : 'justify-content'
+		prop = dir is Row ? 'align-items' : 'justify-content'
 		&.Top
 			{prop} flex-start
 		&.Middle
@@ -255,6 +336,14 @@ for p, prop in props
 			if negate
 				.-{p}{s}{i}
 					{prop}-{side} -(size)
+for size, i in sizes
+	i = 5 - i
+	.Gap{i}
+		gap size
+	.GapX{i}
+		column-gap size
+	.GapY{i}
+		row-gap size
 for pos in Absolute Relative Fixed
 	.{pos}
 		position pos
@@ -315,6 +404,10 @@ for i in 0..5
 	word-break break-word
 .TextTruncate
 	text-truncate 1
+.TextTruncate2
+	text-truncate 2
+.TextTruncate3
+	text-truncate 3
 .TextSelect
 	user-select auto
 .TextNoSelect
@@ -340,10 +433,41 @@ for i in 0..5
 	pointer-events none
 	> *
 		pointer-events auto
+.Ratio11
+	aspect-ratio 1/1
+.Ratio43
+	aspect-ratio 4/3
+.Ratio32
+	aspect-ratio 3/2
+.Ratio53
+	aspect-ratio 5/3
+.Ratio169
+	aspect-ratio 16/9
+.ImgCover
+	object-fit cover
+.ImgContain
+	object-fit contain
+.ImgScaleDown
+	object-fit scale-down
+.ImgFill
+	object-fit fill
+.ImgNone
+	object-fit none
+.ImgContrast
+	image-rendering -webkit-optimize-contrast
 for i in range(1, 10)
+	grayI = lookup('gray' + i)
+	blueI = lookup('blue' + i)
+	redI = lookup('red' + i)
 	.Gray{i}
-		background lookup('gray' + i)
+		background grayI
 	.Blue{i}
-		background lookup('blue' + i)
+		background blueI
 	.Red{i}
-		background lookup('red' + i)
+		background redI
+	.TextGray{i}
+		color grayI
+	.TextBlue{i}
+		color blueI
+	.TextRed{i}
+		color redI

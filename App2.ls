@@ -1,5 +1,5 @@
 os.App =
-	oninit: ->
+	oninit: !->
 		@val = 'lI1|oO0ag3 ~@$%^&*()[]{}-=/,.'
 		@pwd = 'Cái gì :)'
 		@radio = \gaMongHoangDa

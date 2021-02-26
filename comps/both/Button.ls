@@ -2,7 +2,9 @@ Button = m.comp do
 	view: ->
 		m \button.Button,
 			class: m.class do
-				"Button-#that" if @attrs.color
+				"Button-minimal": @attrs.minimal
+				"Button-#{@attrs.color}": @attrs.color
+				@attrs.class
 			type: \button
 			onclick: @attrs.onclick
 			if @attrs.icon
