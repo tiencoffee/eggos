@@ -1,11 +1,14 @@
 Button = m.comp do
+	onbeforeupdate: !->
+		@attrs.type ?= \button
+
 	view: ->
 		m \button.Button,
 			class: m.class do
 				"Button-minimal": @attrs.minimal
 				"Button-#{@attrs.color}": @attrs.color
 				@attrs.class
-			type: \button
+			type: @attrs.type
 			onclick: @attrs.onclick
 			if @attrs.icon
 				m Icon,

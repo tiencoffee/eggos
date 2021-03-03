@@ -1,18 +1,23 @@
 {
 	"compsBoth": [
-		"comps/both/Button.ls",
-		"comps/both/Checkbox.ls",
-		"comps/both/Icon.ls",
-		"comps/both/PasswordInput.ls",
-		"comps/both/Radio.ls",
-		"comps/both/Select.ls",
-		"comps/both/TextInput.ls"
+		"/comps/both/Button.ls",
+		"/comps/both/Checkbox.ls",
+		"/comps/both/ColtrolGroup.ls",
+		"/comps/both/Icon.ls",
+		"/comps/both/PasswordInput.ls",
+		"/comps/both/Radio.ls",
+		"/comps/both/Select.ls",
+		"/comps/both/Table.ls",
+		"/comps/both/TextInput.ls"
 	],
 	"compsMain": [
-		"comps/main/Dialog.ls"
+		"/comps/main/Dialog.ls"
 	],
 	"apps": [
-		"C/apps/FileManager",
-		"C/apps/Store"
+		"/C/apps/FileManager",
+		"/C/apps/Store"
+	],
+	"eggos": [
+		"/C/eggos/db/apps.json"
 	]
 }

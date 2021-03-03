@@ -7,6 +7,7 @@ PasswordInput = m.comp do
 			class:
 				'PasswordInput-hidePassword': @isHidePassword
 				\PasswordInput
+			name: @attrs.name
 			value: @attrs.value
 			oninput: @attrs.oninput
 			onblur: (event) !~>

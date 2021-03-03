@@ -76,5 +76,9 @@ Select = m.comp do
 				@item and @item.text + ''
 			m Icon,
 				name: \caret-down
+			m \input,
+				type: \hidden
+				name: @attrs.name
+				value: @item?value
 			@list =
 				m \.Select_list

@@ -6,10 +6,14 @@ require! {
 }
 process.chdir __dirname
 
+globSync = (glob) ->
+	globConcat.sync glob .map (path) ~> \/ + path
+
 paths =
-	compsBoth: globConcat.sync \comps/both/*
-	compsMain: globConcat.sync \comps/main/*
-	apps: globConcat.sync \C/apps/*
+	compsBoth: globSync \comps/both/*
+	compsMain: globSync \comps/main/*
+	apps: globSync \C/apps/*
+	eggos: globSync \C/eggos/**/*.*
 
 text = JSON.stringify paths,, \\t
 fs.writeFileSync \paths.json text

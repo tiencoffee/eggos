@@ -1,46 +1,77 @@
 Dialog = m.comp do
 	oninit: !->
 		{task} = @attrs
-		{app} = task
-		@isMinimize = Boolean app.isMinimize
-		@isMaximize = Boolean app.isMaximize
-		@icon = app.icon ? \fad:window
-		@title = app.title ? app.name
-		@width = _.clamp app.width, 0 os.screen.width or 800
-		@height = _.clamp app.height, 0 os.screen.height or 600
-		@x = app.x ? Math.floor os.screen.width / 2 - @width / 2
-		@y = app.y ? Math.floor os.screen.height / 2 - @height / 2
-		@minimizable = Boolean app.minimizable ? yes
-		@maximizable = Boolean app.maximizable ? yes
-		@resizable = Boolean app.resizable ? yes
+		{env} = task
+		@isMinimize = Boolean env.isMinimize
+		@isMaximize = Boolean env.isMaximize
+		@icon = env.icon ? \fad:window
+		@title = env.title ? env.name
+		@width = _.clamp env.width, 0 os.screen.width or 800
+		@height = _.clamp env.height, 0 os.screen.height or 600
+		@x = env.x ? Math.floor os.screen.width / 2 - @width / 2
+		@y = env.y ? Math.floor os.screen.height / 2 - @height / 2
+		@minimizable = Boolean env.minimizable ? yes
+		@maximizable = Boolean env.maximizable ? yes
+		@resizable = Boolean env.resizable ? yes
 		@moving = null
 		@dx = 0
 		@dy = 0
 		@minimizeAnim = null
 		@hasMaximize = no
+		@sandbox = '''
+			allow-downloads
+			allow-forms
+			allow-modals
+			allow-orientation-lock
+			allow-pointer-lock
+			allow-popups
+			allow-popups-to-escape-sandbox
+			allow-presentation
+			allow-scripts
+			allow-storage-access-by-user-activation
+			allow-top-navigation
+			allow-top-navigation-by-user-activation
+		'''
+		if env.isSystem
+			@sandbox += ' allow-same-origin'
 		task.ui = @
 
 	oncreate: !->
 		{task} = @attrs
-		{app} = task
-		el = @dom.querySelector \.Dialog_body
+		{env} = task
+		@ifrm = @dom.querySelector \.Dialog_body
 		regex = /\(\((\w+)\)\)/g
 		code = boot.code.replace regex, (, name) ~>
 			switch name
-			| \tid => m.uuid!
-			| \code => task.code
+			| \tid
+				task.tid
+			| \code
+				text = task.code
+				if env.codePath.endsWith \.js
+					text .= replace /`/g \\\`
+					"`` #text ``"
+				else
+					text.replace /\n(?!\n|$)/g \\n\t
 		code = livescript.compile code
+		code .= replace /\\`/g \`
 		styl = boot.styl.replace regex, (, name) ~>
 			switch name
-			| \styl => task.styl
+			| \styl =>
+				text = task.styl
+				if env.stylPath?endsWith \.css
+					"@css { #{task.styl} }"
+				else task.styl
 		styl = stylus.render styl, compress: yes
-		tmpl = boot.tmpl.replace regex, (, name) ~>
+		tmpl = task.tmpl
+		srcdoc = boot.tmpl.replace regex, (, name) ~>
 			switch name
-			| \code => code
 			| \styl => styl
+			| \tmpl => tmpl
+			| \code => code
 		delete task.code
 		delete task.styl
-		el.srcdoc = tmpl
+		delete task.tmpl
+		@ifrm.srcdoc = srcdoc
 		@dom.querySelector \.Dialog_content .animate do
 			* transform: ['scale(.95)' 'scale(1)']
 				opacity: [0 1]
@@ -88,8 +119,9 @@ Dialog = m.comp do
 		_.pull os.tasks, @attrs.task
 
 	onpointerdownTitle: (event) !->
-		event.target.setPointerCapture event.pointerId
-		@moving = {event.x, event.y}
+		if event.which is 1
+			event.target.setPointerCapture event.pointerId
+			@moving = {event.x, event.y}
 
 	onpointermoveTitle: (event) !->
 		event.redraw = no
@@ -141,7 +173,7 @@ Dialog = m.comp do
 						onpointerdown: @onpointerdownTitle
 						onpointermove: @onpointermoveTitle
 						onlostpointercapture: @onlostpointercaptureTitle
-						m \.TextTruncate @title
+						m \.text-truncate @title
 					m Button,
 						class: \Dialog_button
 						minimal: yes
@@ -161,4 +193,5 @@ Dialog = m.comp do
 						icon: \far:times
 						onclick: !~>
 							@close!
-				m \iframe.Dialog_body
+				m \iframe.Dialog_body,
+					sandbox: @sandbox

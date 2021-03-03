@@ -46,27 +46,33 @@ h1, h2, h3, h4, h5, h6, p
 	margin 8px 0
 img, a
 	user-drag none
+a, abbr, acronym, b, bdo, big, br, cite, code, dfn, em, i,
+kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
+	vertical-align baseline
 
 #appEl
 	position absolute
 	inset 0
+	&:empty
+		display none
 .Icon-fa
 	display inline-flex
 .Icon-img
 	width 18px
 	height 18px
-	object-fit contain
+	object-fit cover
 
 .Button
-	height 24px
+	height 26px
 	padding 0 4px
 	border solid 1px #0006
 	border-radius 0
 	display inline-flex
 	justify-content center
 	align-items center
-	background gray1
 	font inherit
+	white-space nowrap
+	background gray1
 	&:hover
 		background gray2
 	&:active
@@ -101,22 +107,25 @@ img, a
 	border 0
 	background #0000
 .Button_text
-	padding 0 4px
+	margin 0 4px
 .Button_icon
-	padding 0 4px
+	margin 0 4px
 
 .TextInput
 	position relative
-	height 24px
+	height 26px
 	border solid 1px #0006
 	display inline-flex
 	justify-content center
 	align-items center
 	background #fff
 	&:focus-within
-		outline solid 2px blue7
-		outline-offset -1px
+		border-color blue7
+		box-shadow 0 0 0 1px blue7
 		z-index 1
+	> .Button
+		height 26px
+		border 0
 .TextInput_leftIcon
 	padding-left 8px
 .TextInput_rightIcon
@@ -135,14 +144,14 @@ img, a
 
 .Radio
 .Checkbox
-	height 24px
+	height 26px
 	display inline-flex
 	align-items center
 .Radio_input
 .Checkbox_input
 	position relative
-	width 18px
-	height 18px
+	width 20px
+	height 20px
 	margin 0
 	border solid 1px #0006
 	background gray1
@@ -177,7 +186,7 @@ img, a
 
 .Select
 	position relative
-	height 24px
+	height 26px
 	padding 0 8px
 	border solid 1px #0006
 	display inline-flex
@@ -195,7 +204,7 @@ img, a
 	&:empty
 		display none
 .Select_item
-	min-height 24px
+	min-height 26px
 	padding 2px 8px
 	display flex
 	align-items center
@@ -204,6 +213,50 @@ img, a
 .Select_divider
 	margin 4px 0
 	border-bottom solid 1px #0006
+
+.ControlGroup
+	display inline-flex
+	justify-content center
+	align-items center
+	> :not(:first-child)
+		margin-left -1px
+
+.Table
+	display block
+	overflow auto
+	tr
+		height 26px
+	td, th
+		padding 0 8px
+.Table-hasHeader
+	tr:first-child
+		text-align left
+		th
+			position sticky
+			top 0
+			background #fff
+			box-shadow 0 1px #0006
+.Table-bordered
+	td, th
+		&:not(:last-child)
+			border-right solid 1px #0006
+	tr
+		&:not(:last-child)
+			border-bottom solid 1px #0006
+.Table-striped
+	tr
+		&:nth-child(even)
+			background gray1
+.Table-interactive
+	&.Table-hasHeader tr:not(:first-child)
+	&:not(.Table-hasHeader) tr
+		&:hover
+			background gray2
+		&:active
+			background gray3
+.Table-content
+	width 100%
+	border-collapse collapse
 
 .Dialog
 	position absolute
@@ -232,11 +285,13 @@ img, a
 	background gray1
 	box-shadow 0 2px 8px #0006
 .Dialog_header
-	height 32px
-	padding 0 4px
+	padding 4px
 	display flex
 	align-items center
+	> .Button
+		height 24px
 .Dialog_title
+	height 100%
 	padding 0 8px
 	display flex
 	flex-grow 1
@@ -251,223 +306,187 @@ img, a
 
 ((styl))
 
-.Row
+.row
 	display flex
 	flex-direction row
-.Column
+.column
 	display flex
 	flex-direction column
-.Col
+.col
 	flex-grow 1
-.Col0
+.col-0
 	flex-shrink 0
 for i in range(1, 12)
 	val = floor(i / 12 * 100%, 2)
-	.Row > .Col{i}
+	.row > .col-{i}
 		width val
-	.Column > .Col{i}
+	.column > .col-{i}
 		height val
-	.Row{i}
+	.row-{i}
 		display grid
 		grid-template-columns repeat(i, 1fr)
-		> .Col{i}
+		> .col-{i}
 			grid-column span (i)
-	.Offset{i}
+	.offset-{i}
 		margin-right val
-.Full
+.full
 	position absolute
 	inset 0
-.Wrap
+.wrap
 	flex-wrap wrap
-.Nowrap
+.nowrap
 	flex-wrap nowrap
 for dir in Row Column
 	.{dir}
 		prop = dir is Row ? 'justify-content' : 'align-items'
-		&.Start
+		&.start
 			{prop} flex-start
-		&.Center
+		&.center
 			{prop} center
-		&.End
+		&.end
 			{prop} flex-end
 		prop = dir is Row ? 'align-items' : 'justify-content'
-		&.Top
+		&.top
 			{prop} flex-start
-		&.Middle
+		&.middle
 			{prop} center
-		&.Bottom
+		&.bottom
 			{prop} flex-end
-.Between
+.between
 	justify-content space-between
-.Around
+.around
 	justify-content space-around
-.Evenly
+.evenly
 	justify-content space-evenly
-.Stretch
+.stretch
 	align-items stretch
-props = {P: padding, M: margin}
+props = {p: padding, m: margin}
 sides = {t: top, r: right, b: bottom, l: left}
 sizes = 32px 16px 8px 4px 2px 0
 for p, prop in props
 	for size, i in sizes
 		i = 5 - i
-		negate = p is M and i
-		.{p}{i}
+		negate = p is 'm' and i
+		.{p}-{i}
 			{prop} size
 		if negate
-			.-{p}{i}
+			.-{p}-{i}
 				{prop} -(size)
-		.{p}x{i}
+		.{p}x-{i}
 			{prop}-left size
 			{prop}-right size
-		.{p}y{i}
+		.{p}y-{i}
 			{prop}-top size
 			{prop}-bottom size
 		if negate
-			.-{p}x{i}
+			.-{p}x-{i}
 				{prop}-left -(size)
 				{prop}-right -(size)
-			.-{p}y{i}
+			.-{p}y-{i}
 				{prop}-top -(size)
 				{prop}-bottom -(size)
 		for s, side in sides
-			.{p}{s}{i}
+			.{p}{s}-{i}
 				{prop}-{side} size
 			if negate
-				.-{p}{s}{i}
+				.-{p}{s}-{i}
 					{prop}-{side} -(size)
 for size, i in sizes
 	i = 5 - i
-	.Gap{i}
+	.gap-{i}
 		gap size
-	.GapX{i}
+	.gap-x-{i}
 		column-gap size
-	.GapY{i}
+	.gap-y-{i}
 		row-gap size
-for pos in Absolute Relative Fixed
+for pos in absolute relative fixed
 	.{pos}
 		position pos
-for size in 100 75 50 25 0
-	.W{size}
-		width (size)%
-	.H{size}
-		height (size)%
-.WFit
-	width fit-content
-.WMin
-	width min-content
-.WMax
-	width max-content
-.HFit
-	height fit-content
-.HMin
-	height min-content
-.HMax
-	height max-content
+for size in 100% 75% 50% 25% 0
+	.w-{size}
+		width size
+	.h-{size}
+		height size
+props = {w: width, h: height}
+for p, prop in props
+	for type in fit min max
+		.{p}-{type}
+			{prop} (type)-content
 for i in 0..5
-	.Z{i}
+	.z-{i}
 		z-index i
 	if i
-		.-Z{i}
+		.-z-{i}
 			z-index -(i)
-.Block
-	display block
-.InlineBlock
-	display inline-block
-.Inline
-	display inline
-.Flex
-	display flex
-.InlineFlex
-	display inline-flex
-.Hidden, [hidden]
+for dsp in block inline-block inline flex inline-flex
+	.{dsp}
+		display dsp
+.hidden, [hidden]
 	display none
-.TextLeft
-	text-align left
-.TextCenter
-	text-align center
-.TextRight
-	text-align right
-.TextBaseline
+for align in left center right
+	.text-{align}
+		text-align align
+.text-baseline
 	vertical-align baseline
-.TextBold
+.text-bold
 	font-weight bold
-.TextItalic
+.text-italic
 	font-style italic
-.TextNowrap
+.text-nowrap
 	white-space nowrap
 	word-break break-word
-.TextPre
+.text-pre
 	white-space pre
-.TextPreWrap
+.text-pre-wrap
 	white-space pre-wrap
 	word-break break-word
-.TextTruncate
+.text-truncate
 	text-truncate 1
-.TextTruncate2
+.text-truncate-2
 	text-truncate 2
-.TextTruncate3
+.text-truncate-3
 	text-truncate 3
-.TextSelect
+.text-select
 	user-select auto
-.TextNoSelect
+.text-noselect
 	user-select none
-.TextSelectAll
-	user-select none
-.TextSecurity
+.text-select-all
+	user-select all
+.text-security
 	text-security square
-.TextSmall, small
+.text-small, small
 	font-size 9pt
-.Scroll
+.scroll
 	overflow auto
-.ScrollY
+.scroll-y
 	overflow-x hidden
 	overflow-y auto
-.NoScroll
+.noscroll
 	overflow hidden
-.Event
+.event
 	pointer-events auto
-.NoEvent
+.noevent
 	pointer-events none
-.EventChilds
+.event-childs
 	pointer-events none
 	> *
 		pointer-events auto
-.Ratio11
-	aspect-ratio 1/1
-.Ratio43
-	aspect-ratio 4/3
-.Ratio32
-	aspect-ratio 3/2
-.Ratio53
-	aspect-ratio 5/3
-.Ratio169
-	aspect-ratio 16/9
-.ImgCover
-	object-fit cover
-.ImgContain
-	object-fit contain
-.ImgScaleDown
-	object-fit scale-down
-.ImgFill
-	object-fit fill
-.ImgNone
-	object-fit none
-.ImgContrast
+for ratio in (1 1) (4 3) (3 2) (5 3) (16 9)
+	w = ratio[0]
+	h = ratio[1]
+	.ratio-{w}x{h}
+		aspect-ratio w\/h
+for fit in cover contain scale-down fill none
+	.img-{fit}
+		object-fit fit
+.img-contrast
 	image-rendering -webkit-optimize-contrast
-for i in range(1, 10)
-	grayI = lookup('gray' + i)
-	blueI = lookup('blue' + i)
-	redI = lookup('red' + i)
-	.Gray{i}
-		background grayI
-	.Blue{i}
-		background blueI
-	.Red{i}
-		background redI
-	.TextGray{i}
-		color grayI
-	.TextBlue{i}
-		color blueI
-	.TextRed{i}
-		color redI
+props = {bg: background, text: color}
+for p, prop in props
+	for color in 'gray' 'blue' 'red'
+		for i in range(1, 10)
+			val = lookup(color + i)
+			.{p}-{color}-{i}
+			.hover-{p}-{color}-{i}
+			.active-{p}-{color}-{i}
+				{prop} val

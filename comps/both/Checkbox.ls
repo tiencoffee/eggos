@@ -3,6 +3,7 @@ Checkbox = m.comp do
 		m \label.Checkbox,
 			m \input.Checkbox_input,
 				type: \checkbox
+				name: @attrs.name
 				checked: @attrs.checked
 				oninput: !~>
 					@attrs.oninput? not @attrs.checked, it
