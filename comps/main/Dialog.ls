@@ -72,7 +72,7 @@ Dialog = m.comp do
 		delete task.styl
 		delete task.tmpl
 		@ifrm.srcdoc = srcdoc
-		@dom.querySelector \.Dialog_content .animate do
+		@dom.animate do
 			* transform: ['scale(.95)' 'scale(1)']
 				opacity: [0 1]
 			* duration: 400
@@ -90,7 +90,8 @@ Dialog = m.comp do
 				@minimizeAnim = @dom.animate do
 					* width: width + \px
 						height: height + \px
-						transform: "translate(#{x}px,#{y}px)"
+						left: x + \px
+						top: y + \px
 					* duration: 300
 						easing: \ease
 						fill: \forwards
@@ -107,11 +108,10 @@ Dialog = m.comp do
 				@isMaximize = val
 				@hasMaximize = yes
 				if val
-					style = getComputedStyle @dom
+					rect = @dom.getBoundingClientRect!
 					@dom.animate do
-						* width: [style.width, \100%]
-							height: [style.height, \100%]
-							transform: [style.transform, 'translate(0,0)']
+						* left: [rect.x + \px, 0]
+							top: [rect.y + \px, 0]
 						* duration: 250
 							easing: \ease
 
@@ -146,7 +146,7 @@ Dialog = m.comp do
 
 	onbeforeremove: ->
 		new Promise (resolve) !~>
-			@dom.querySelector \.Dialog_content .animate do
+			@dom.animate do
 				* transform: 'scale(.95)'
 					opacity: 0
 				* duration: 200
@@ -162,36 +162,37 @@ Dialog = m.comp do
 			style: m.style do
 				width: @width
 				height: @height
-				transform: "translate(#{@x + @dx}px,#{@y + @dy}px)"
-			m \.Dialog_content,
-				m \.Dialog_header,
-					m Button,
-						class: \Dialog_icon
-						minimal: yes
-						icon: @icon
-					m \.Dialog_title,
-						onpointerdown: @onpointerdownTitle
-						onpointermove: @onpointermoveTitle
-						onlostpointercapture: @onlostpointercaptureTitle
-						m \.text-truncate @title
-					m Button,
-						class: \Dialog_button
-						minimal: yes
-						icon: \far:minus
-						onclick: !~>
-							@minimize!
-					m Button,
-						class: \Dialog_button
-						minimal: yes
-						icon: \far:plus
-						onclick: !~>
-							@maximize!
-					m Button,
-						class: \Dialog_button
-						minimal: yes
-						color: \red
-						icon: \far:times
-						onclick: !~>
-							@close!
-				m \iframe.Dialog_body,
-					sandbox: @sandbox
+				left: @x
+				top: @y
+				transform: "translate(#{@dx}px,#{@dy}px)"
+			m \.Dialog_header,
+				m Button,
+					class: \Dialog_icon
+					minimal: yes
+					icon: @icon
+				m \.Dialog_title,
+					onpointerdown: @onpointerdownTitle
+					onpointermove: @onpointermoveTitle
+					onlostpointercapture: @onlostpointercaptureTitle
+					m \.text-truncate @title
+				m Button,
+					class: \Dialog_button
+					minimal: yes
+					icon: \far:minus
+					onclick: !~>
+						@minimize!
+				m Button,
+					class: \Dialog_button
+					minimal: yes
+					icon: \far:plus
+					onclick: !~>
+						@maximize!
+				m Button,
+					class: \Dialog_button
+					minimal: yes
+					color: \red
+					icon: \far:times
+					onclick: !~>
+						@close!
+			m \iframe.Dialog_body,
+				sandbox: @sandbox

@@ -8,7 +8,8 @@
 		"/comps/both/Radio.ls",
 		"/comps/both/Select.ls",
 		"/comps/both/Table.ls",
-		"/comps/both/TextInput.ls"
+		"/comps/both/TextInput.ls",
+		"/comps/both/TreeView.ls"
 	],
 	"compsMain": [
 		"/comps/main/Dialog.ls"

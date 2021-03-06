@@ -1,8 +1,11 @@
-for i in range(1, 10)
-	define('gray' + i, lighten(#5c7080, (7 - i) / 7 * 120% - 10%))
-	define('blue' + i, lighten(#137cbd, (7 - i) / 7 * 100%))
-	define('red' + i, lighten(#db3737, (7 - i) / 7 * 100%))
-
+colrs = {
+	light: #ebf1f5 #e1e8ed #ced9e0 #a7b6c24d #7386944d
+	blue: #137cbd #106ba3 #0e5a8a #137cbd26 #137cbd4d
+	red: #db3737 #c23030 #a82a2a #db373726 #db37374d
+}
+for c, colr in colrs
+	for val, i in colr
+		define(c + i, val)
 line-clamp()
 	-webkit-line-clamp arguments
 	line-clamp arguments
@@ -26,10 +29,11 @@ text-truncate(line)
 		box-orient vertical
 		overflow hidden
 
-@import '//cdn.jsdelivr.net/gh/tiencoffee/fonts/Calibri/Calibri.css'
+// @import '//cdn.jsdelivr.net/gh/tiencoffee/fonts/Calibri/Calibri.css'
+@import '//fonts.googleapis.com/css?family=Verdana:400,700'
 body
 	margin 0
-	font 12pt 'Calibri',sans-serif
+	font 12pt 'Verdana',sans-serif
 	word-break break-word
 	overflow hidden
 	user-select none
@@ -40,7 +44,7 @@ body
 :focus
 	outline 0
 ::selection
-	background blue7
+	background blue0
 	color #fff
 h1, h2, h3, h4, h5, h6, p
 	margin 8px 0
@@ -55,57 +59,46 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 	inset 0
 	&:empty
 		display none
+[data-main]
+	#appEl
+		background linear-gradient(45deg,#D13913,#7157d9)
 .Icon-fa
 	display inline-flex
+	justify-content center
+	align-items center
 .Icon-img
 	width 18px
 	height 18px
 	object-fit cover
 
 .Button
-	height 26px
+	height 28px
 	padding 0 4px
-	border solid 1px #0006
-	border-radius 0
+	border solid 1px #0004
+	border-radius 4px
 	display inline-flex
 	justify-content center
 	align-items center
 	font inherit
 	white-space nowrap
-	background gray1
-	&:hover
-		background gray2
-	&:active
-		background gray3
-.Button-blue
-	background blue7
-	color #fff
-	&:hover
-		background blue8
-	&:active
-		background blue9
-	&.Button-minimal
-		color blue8
+for c, colr in colrs
+	isLight = c is 'light'
+	.Button-{c}
+		background colr[0]
+		color isLight ? #000 : #fff
 		&:hover
-			background blue2
+			background colr[1]
 		&:active
-			background blue3
-.Button-red
-	background red7
-	color #fff
-	&:hover
-		background red8
-	&:active
-		background red9
-	&.Button-minimal
-		color red8
-		&:hover
-			background red2
-		&:active
-			background red3
+			background colr[2]
+		&.Button-minimal
+			color isLight ? #000 : colr[0]
+			&:hover
+				background colr[3]
+			&:active
+				background colr[4]
 .Button-minimal
 	border 0
-	background #0000
+	background transparent
 .Button_text
 	margin 0 4px
 .Button_icon
@@ -113,18 +106,21 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 
 .TextInput
 	position relative
-	height 26px
-	border solid 1px #0006
+	height 28px
+	border solid 1px #0004
+	border-radius 4px
 	display inline-flex
 	justify-content center
 	align-items center
 	background #fff
+	box-shadow 0 1px 2px inset #0001
 	&:focus-within
-		border-color blue7
-		box-shadow 0 0 0 1px blue7
+		border-color blue0
+		box-shadow 0 0 0 1px blue0
 		z-index 1
 	> .Button
-		height 26px
+		height 100%
+		margin 2px
 		border 0
 .TextInput_leftIcon
 	padding-left 8px
@@ -137,6 +133,7 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 	border 0
 	border-radius 0
 	font inherit
+	background transparent
 
 .PasswordInput-hidePassword
 	> .TextInput_input
@@ -144,22 +141,30 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 
 .Radio
 .Checkbox
-	height 26px
+	height 28px
 	display inline-flex
 	align-items center
 .Radio_input
 .Checkbox_input
 	position relative
-	width 20px
-	height 20px
+	width 18px
+	height 18px
 	margin 0
-	border solid 1px #0006
-	background gray1
+	border solid 1px #0004
+	background light0
 	appearance none
+	&:hover
+		background light1
+		&:checked
+			background blue1
+	&:active
+		background light2
+		&:checked
+			background blue2
 .Radio_input
 	border-radius 50%
 	&:checked
-		background blue7
+		background blue0
 		&:after
 			position absolute
 			inset 4px
@@ -167,9 +172,9 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 			background #fff
 			content ''
 .Checkbox_input
-	border-radius 0
+	border-radius 4px
 	&:checked
-		background blue7
+		background blue0
 		&:after
 			position absolute
 			inset 0
@@ -186,33 +191,38 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 
 .Select
 	position relative
-	height 26px
+	height 28px
 	padding 0 8px
-	border solid 1px #0006
+	border solid 1px #0004
+	border-radius 4px
 	display inline-flex
 	align-items center
-	background gray1
+	background light0
+	&:hover
+		background light1
 .Select_text
 	margin-right 8px
 	flex-grow 1
 	text-truncate 1
 .Select_list
-	border solid 1px #0006
+	border solid 1px #0004
+	border-radius 4px
 	background #fff
 	overflow-x hidden
 	overflow-y auto
+	box-shadow 0 2px 8px #0004
 	&:empty
 		display none
 .Select_item
-	min-height 26px
+	min-height 28px
 	padding 2px 8px
 	display flex
 	align-items center
 .Select_item-hover
-	background gray2
+	background light1
 .Select_divider
 	margin 4px 0
-	border-bottom solid 1px #0006
+	border-bottom solid 1px #0004
 
 .ControlGroup
 	display inline-flex
@@ -220,12 +230,20 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 	align-items center
 	> :not(:first-child)
 		margin-left -1px
+	> *
+		border-radius 0
+	> :first-child
+		border-top-left-radius 4px
+		border-bottom-left-radius 4px
+	> :last-child
+		border-top-right-radius 4px
+		border-bottom-right-radius 4px
 
 .Table
 	display block
 	overflow auto
 	tr
-		height 26px
+		height 28px
 	td, th
 		padding 0 8px
 .Table-hasHeader
@@ -235,31 +253,56 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 			position sticky
 			top 0
 			background #fff
-			box-shadow 0 1px #0006
+			box-shadow 0 1px #0004
 .Table-bordered
 	td, th
 		&:not(:last-child)
-			border-right solid 1px #0006
+			border-right solid 1px #0004
 	tr
 		&:not(:last-child)
-			border-bottom solid 1px #0006
+			border-bottom solid 1px #0004
 .Table-striped
 	tr
 		&:nth-child(even)
-			background gray1
+			background light0
 .Table-interactive
 	&.Table-hasHeader tr:not(:first-child)
 	&:not(.Table-hasHeader) tr
 		&:hover
-			background gray2
+			background light1
 		&:active
-			background gray3
+			background light2
 .Table-content
 	width 100%
 	border-collapse collapse
 
+.TreeView-subtree
+	padding-left 16px
+	border-left dotted 1px #0004
+.TreeView_nodeBody
+	position relative
+	height 28px
+	display flex
+	align-items center
+.TreeView_nodeIcon
+	height 100%
+.TreeView_nodeName
+	position absolute
+	left 24px
+	right 0
+	height 100%
+	display flex
+	flex-grow 1
+	align-items center
+	overflow hidden
+
 .Dialog
 	position absolute
+	border-radius 8px 8px 0 0
+	display flex
+	flex-direction column
+	background light0
+	box-shadow 0 0 0 1px #0004,0 2px 16px #0004
 	animation-duration .25s
 	animation-timing-function ease
 	animation-fill-mode forwards
@@ -267,23 +310,20 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 	animation-name Dialog-maximize
 @keyframes Dialog-maximize
 	to
+		left 0
+		top 0
 		width 100%
 		height 100%
-		transform translate(0,0)
+		border-radius 0
 .Dialog-unmaximize
 	animation-name Dialog-unmaximize
 @keyframes Dialog-unmaximize
 	from
+		left 0
+		top 0
 		width 100%
 		height 100%
-		transform translate(0,0)
-.Dialog_content
-	height 100%
-	border solid 1px #0006
-	display flex
-	flex-direction column
-	background gray1
-	box-shadow 0 2px 8px #0006
+		border-radius 0
 .Dialog_header
 	padding 4px
 	display flex
@@ -299,26 +339,32 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 	justify-content center
 	overflow hidden
 .Dialog_body
-	margin 0 4px 4px
 	border 0
 	flex-grow 1
 	background #fff
+.disabled
+	opacity .5
+	pointer-events none
 
 ((styl))
 
 .row
 	display flex
 	flex-direction row
+	> .col
+		min-width 0
 .column
 	display flex
 	flex-direction column
+	> .col
+		min-height 0
 .col
 	flex-grow 1
 .col-0
 	flex-shrink 0
 for i in range(1, 12)
 	val = floor(i / 12 * 100%, 2)
-	.row > .col-{i}
+	:not(.column) > .col-{i}
 		width val
 	.column > .col-{i}
 		height val
@@ -402,11 +448,11 @@ for size, i in sizes
 for pos in absolute relative fixed
 	.{pos}
 		position pos
-for size in 100% 75% 50% 25% 0
+for size in 100 75 50 25 0
 	.w-{size}
-		width size
+		width (size)%
 	.h-{size}
-		height size
+		height (size)%
 props = {w: width, h: height}
 for p, prop in props
 	for type in fit min max
@@ -432,14 +478,14 @@ for align in left center right
 	font-weight bold
 .text-italic
 	font-style italic
+.text-wrap
+	white-space normal
 .text-nowrap
 	white-space nowrap
-	word-break break-word
-.text-pre
-	white-space pre
 .text-pre-wrap
 	white-space pre-wrap
-	word-break break-word
+.text-pre
+	white-space pre
 .text-truncate
 	text-truncate 1
 .text-truncate-2
@@ -481,12 +527,11 @@ for fit in cover contain scale-down fill none
 		object-fit fit
 .img-contrast
 	image-rendering -webkit-optimize-contrast
+
 props = {bg: background, text: color}
 for p, prop in props
-	for color in 'gray' 'blue' 'red'
-		for i in range(1, 10)
-			val = lookup(color + i)
-			.{p}-{color}-{i}
-			.hover-{p}-{color}-{i}
-			.active-{p}-{color}-{i}
-				{prop} val
+	for c, colr in colrs
+		.{p}-{c}
+		.hover-{p}-{c}
+		.active-{p}-{c}
+			{prop} colr[0]

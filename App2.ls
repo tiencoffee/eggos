@@ -27,16 +27,22 @@ os.App =
 		@select = \only-value
 
 	view: ->
-		m \.P3,
+		m \.p-3,
+			m \style,
+				'#appEl > div > * {margin: 4px}'
 			m \p Date.now!
 			m Button,
 				'Nút bấm'
-			m Button,
-				color: \blue
-				'Nút bấm'
-			m Button,
-				color: \red
-				'Nút bấm'
+			<[light blue red]>map (color) ~>
+				[
+					m Button,
+						color: color
+						color
+					m Button,
+						minimal: yes
+						color: color
+						color
+				]
 			m Button,
 				icon: \download
 				'Tải xuống'
@@ -74,9 +80,6 @@ os.App =
 				items: @options
 				value: @select
 				oninput: (@select) ~>
-			for i from 1 to 10
-				m ".Gray#i.P3.InlineBlock" i
-			for i from 1 to 10
-				m ".Blue#i.P3.InlineBlock" i
-			for i from 1 to 10
-				m ".Red#i.P3.InlineBlock" i
+			<[light blue red]>map (color) ~>
+				m ".bg-#color.p-3.inline-block",
+					color
