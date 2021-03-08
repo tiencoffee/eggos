@@ -1,23 +1,29 @@
 colrs = {
-	light: #ebf1f5 #e1e8ed #ced9e0 #a7b6c24d #7386944d
-	blue: #137cbd #106ba3 #0e5a8a #137cbd26 #137cbd4d
-	red: #db3737 #c23030 #a82a2a #db373726 #db37374d
+	light: #eee #ddd #ccc #aaa4 #7774
+	blue: #17b #16a #168 #17b2 #17b4
+	red: #d33 #b33 #a33 #d332 #d334
 }
 for c, colr in colrs
 	for val, i in colr
 		define(c + i, val)
-line-clamp()
-	-webkit-line-clamp arguments
-	line-clamp arguments
 box-orient()
 	-webkit-box-orient arguments
 	box-orient arguments
+font-smoothing()
+	-webkit-font-smoothing arguments
+	font-smoothing arguments
+line-clamp()
+	-webkit-line-clamp arguments
+	line-clamp arguments
 text-security()
 	-webkit-text-security arguments
 	text-security arguments
 user-drag()
 	-webkit-user-drag arguments
 	user-drag arguments
+user-modify()
+	-webkit-user-modify arguments
+	user-modify arguments
 text-truncate(line)
 	if line < 2
 		text-overflow ellipsis
@@ -46,6 +52,13 @@ body
 ::selection
 	background blue0
 	color #fff
+::-webkit-scrollbar
+	width 12px
+	height 12px
+::-webkit-scrollbar-track
+	background light0
+::-webkit-scrollbar-thumb
+	background blue0
 h1, h2, h3, h4, h5, h6, p
 	margin 8px 0
 img, a
@@ -59,9 +72,7 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 	inset 0
 	&:empty
 		display none
-[data-main]
-	#appEl
-		background linear-gradient(45deg,#D13913,#7157d9)
+
 .Icon-fa
 	display inline-flex
 	justify-content center
@@ -75,7 +86,7 @@ kbd, map, q, samp, small, span, strong, sub, sup, time, tt, var
 	height 28px
 	padding 0 4px
 	border solid 1px #0004
-	border-radius 4px
+	border-radius 0
 	display inline-flex
 	justify-content center
 	align-items center
@@ -97,7 +108,7 @@ for c, colr in colrs
 			&:active
 				background colr[4]
 .Button-minimal
-	border 0
+	border-color transparent
 	background transparent
 .Button_text
 	margin 0 4px
@@ -108,12 +119,12 @@ for c, colr in colrs
 	position relative
 	height 28px
 	border solid 1px #0004
-	border-radius 4px
+	border-radius 0
 	display inline-flex
 	justify-content center
 	align-items center
 	background #fff
-	box-shadow 0 1px 2px inset #0001
+	box-shadow inset 0 1px 2px #0001
 	&:focus-within
 		border-color blue0
 		box-shadow 0 0 0 1px blue0
@@ -172,7 +183,7 @@ for c, colr in colrs
 			background #fff
 			content ''
 .Checkbox_input
-	border-radius 4px
+	border-radius 0
 	&:checked
 		background blue0
 		&:after
@@ -194,7 +205,6 @@ for c, colr in colrs
 	height 28px
 	padding 0 8px
 	border solid 1px #0004
-	border-radius 4px
 	display inline-flex
 	align-items center
 	background light0
@@ -206,7 +216,6 @@ for c, colr in colrs
 	text-truncate 1
 .Select_list
 	border solid 1px #0004
-	border-radius 4px
 	background #fff
 	overflow-x hidden
 	overflow-y auto
@@ -224,20 +233,44 @@ for c, colr in colrs
 	margin 4px 0
 	border-bottom solid 1px #0004
 
+.Menu
+	padding 4px 0
+	border solid 1px #0004
+	display inline-block
+	background #fff
+.Menu_item
+	min-height 28px
+	padding 2px 8px
+	display flex
+	align-items center
+.Menu_item-hover
+	background light1
+.Menu_itemIcon
+	min-width 20px
+	margin-right 8px
+	display flex
+	justify-content center
+	align-items center
+.Menu_itemText
+	margin-right 16px
+	flex-grow 1
+.Menu_itemLabel
+	font-size 10pt
+.Menu_divider
+	margin 4px 0
+	border-bottom solid 1px #0004
+.Menu-popper
+	&:empty
+		display none
+.Menu-submenu
+	box-shadow 0 2px 8px #0004
+
 .ControlGroup
 	display inline-flex
 	justify-content center
 	align-items center
 	> :not(:first-child)
 		margin-left -1px
-	> *
-		border-radius 0
-	> :first-child
-		border-top-left-radius 4px
-		border-bottom-left-radius 4px
-	> :last-child
-		border-top-right-radius 4px
-		border-bottom-right-radius 4px
 
 .Table
 	display block
@@ -298,7 +331,6 @@ for c, colr in colrs
 
 .Dialog
 	position absolute
-	border-radius 8px 8px 0 0
 	display flex
 	flex-direction column
 	background light0
@@ -314,7 +346,6 @@ for c, colr in colrs
 		top 0
 		width 100%
 		height 100%
-		border-radius 0
 .Dialog-unmaximize
 	animation-name Dialog-unmaximize
 @keyframes Dialog-unmaximize
@@ -323,7 +354,6 @@ for c, colr in colrs
 		top 0
 		width 100%
 		height 100%
-		border-radius 0
 .Dialog_header
 	padding 4px
 	display flex
@@ -501,12 +531,27 @@ for align in left center right
 .text-security
 	text-security square
 .text-small, small
-	font-size 9pt
+	font-size 10pt
 .scroll
 	overflow auto
 .scroll-y
 	overflow-x hidden
 	overflow-y auto
+.scroll-overlay
+	overflow overlay
+.scroll-overlay-y
+	overflow-x hidden
+	overflow-y overlay
+.scroll-overlay
+.scroll-overlay-y
+	&::-webkit-scrollbar-track
+	&::-webkit-scrollbar-thumb
+		background transparent
+	&:hover
+		&::-webkit-scrollbar-track
+			background light3
+		&::-webkit-scrollbar-thumb
+			background blue4
 .noscroll
 	overflow hidden
 .event

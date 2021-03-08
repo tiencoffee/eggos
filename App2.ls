@@ -25,6 +25,69 @@ os.App =
 			* text: "Biến: #@val"
 				value: @val
 		@select = \only-value
+		@menuItems =
+			* text: 'Chọn'
+				color: \blue
+				icon: \check-circle
+			,,
+			* text: 'Sắp xếp theo'
+				icon: \sort-amount-down
+				items:
+					* text: 'Tên'
+						onclick: !~>
+							console.log 4
+					* text: 'Ngày'
+					* text: 'Loại'
+					,,
+					* text: 'Tùy chỉnh...'
+			* text: 'Làm mới'
+				color: \green
+			,,
+			* text: 'Xóa'
+				color: \red
+				icon: \trash-alt
+				label: \Delete
+			* text: 'Ngôn ngữ'
+				color: \yellow
+				items:
+					* text: 'Việt Nam'
+						icon: 197473
+					* text: 'Anh'
+						icon: 197374
+						items:
+							* text: 'Anh'
+								icon: 197374
+							* text: 'Mỹ'
+								icon: 197484
+							* text: 'Canada'
+								icon: 197430
+							* text: 'Úc'
+								icon: 197507
+					* text: 'Nhật Bản'
+						icon: 197604
+					* text: 'Trung Quốc'
+						icon: 197375
+					* text: 'Các tiểu vương quốc Ả Rập thống nhất'
+						icon: 197569
+					* text: 'Tây Ban Nha'
+						icon: 197593
+						items:
+							* text: 'Tây Ban Nha'
+								icon: 197593
+							* text: 'Mexico'
+								icon: 197397
+					* text: 'Bồ Đào Nha'
+						icon: 197463
+						items:
+							* text: 'Bồ Đào Nha'
+								icon: 197463
+							* text: 'Brazil'
+								icon: 197386
+			* text: 'Tìm kiếm trên Google'
+				disabled: yes
+				icon: \fab:google
+			* text: 'Thông tin...'
+				icon: \info
 
 	view: ->
 		m \.p-3,
@@ -83,3 +146,5 @@ os.App =
 			<[light blue red]>map (color) ~>
 				m ".bg-#color.p-3.inline-block",
 					color
+			m Menu,
+				items: @menuItems

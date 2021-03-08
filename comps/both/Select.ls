@@ -75,7 +75,7 @@ Select = m.comp do
 			m \.Select_text,
 				@item and @item.text + ''
 			m Icon,
-				name: \caret-down
+				name: \chevron-down
 			m \input,
 				type: \hidden
 				name: @attrs.name

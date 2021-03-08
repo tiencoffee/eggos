@@ -76,6 +76,9 @@ os =
 				@canUndo = yes
 				@list[@index % @size]
 
+	showContextMenu: (items) !->
+		@contextMenuItems = items
+
 m <<<
 	uidVal: 0
 	cssUnitless:

@@ -4,6 +4,7 @@
 		"/comps/both/Checkbox.ls",
 		"/comps/both/ColtrolGroup.ls",
 		"/comps/both/Icon.ls",
+		"/comps/both/Menu.ls",
 		"/comps/both/PasswordInput.ls",
 		"/comps/both/Radio.ls",
 		"/comps/both/Select.ls",

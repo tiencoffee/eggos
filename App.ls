@@ -7,6 +7,7 @@ os.App = m.comp do
 		@apps = []
 		@tasks = []
 		@screen = {}
+		@contextMenuItems = null
 		@onresize!
 
 	normalizePath: (path, returnArr) ->
@@ -253,7 +254,13 @@ os.App = m.comp do
 
 	view: ->
 		m \._main,
+			m \style,
+				'#appEl { background: linear-gradient(45deg,#d13913,#7157d9) }'
 			m \._tasks,
 				@tasks.map (task) ~>
 					m Dialog,
 						task: task
+			if @contextMenuItems
+				m Menu,
+					class: \_contextMenu
+					items: @contextMenuItems
